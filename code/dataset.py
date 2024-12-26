@@ -39,7 +39,9 @@ def process_voxel_ts(v, p, t=8):
     '''
     # average the time axis first
     num_frames_per_window = t // 0.75 # ~0.75s per frame in HCP
-    v_split = np.array_split(v, len(v) // num_frames_per_window, axis=0)
+    # Yohann: this makes the assumption that 1200 is the time dimension here
+    # 
+    v_split = np.array_split(v, len(v) // num_frames_per_window, axis=0) 
     v_split = np.concatenate([np.mean(f,axis=0).reshape(1,-1) for f in v_split],axis=0)
     # pad the num_voxels
     # v_split = np.concatenate([v_split, np.zeros((v_split.shape[0], p - v_split.shape[1] % p))], axis=-1)
@@ -150,6 +152,7 @@ class hcp_dataset(Dataset):
        
 class Kamitani_pretrain_dataset(Dataset):
     def __init__(self, path='../data/Kamitani/npz', roi='VC', patch_size=16, transform=identity, aug_times=2):
+        breakpoint()
         super(Kamitani_pretrain_dataset, self).__init__()
         k1, k2 = create_Kamitani_dataset(path, roi, patch_size, transform, include_nonavg_test=True)
         # data = np.concatenate([k1.fmri, k2.fmri], axis=0)

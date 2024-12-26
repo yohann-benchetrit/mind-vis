@@ -102,6 +102,7 @@ def fmri_transform(x, sparse_rate=0.2):
     return torch.FloatTensor(x_aug)
 
 def main(config):
+    breakpoint()
     if torch.cuda.device_count() > 1:
         torch.cuda.set_device(config.local_rank) 
         torch.distributed.init_process_group(backend='nccl')
